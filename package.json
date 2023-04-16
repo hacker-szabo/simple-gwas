@@ -24,6 +24,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@iconify/react": "^4.1.0",
     "@types/eslint": "^8.21.3",
     "@types/node": "^18.15.5",
     "@types/prettier": "^2.7.2",
