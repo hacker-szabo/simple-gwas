@@ -27,9 +27,8 @@ model Gwas {
 }
 
 model News {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  validUntil DateTime
-  message    String
-  userId     String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  message   String
+  userId    String
 }
