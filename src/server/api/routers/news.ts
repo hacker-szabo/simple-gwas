@@ -62,7 +62,8 @@ export const newsRouter = createTRPCRouter({
                 userId
             },
             data: {
-                silver: gwas.silver - 5
+                silver: gwas.silver - 5,
+                points: gwas.points + 30
             }
         })
         

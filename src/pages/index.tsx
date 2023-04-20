@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   const user = useUser();
 
   const gwas = api.gwas.getGwas.useQuery({
-      userId: user.user?.id
+      // userId: user.user?.id
   })
 
   const imageDimensions = 200;
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
           <DashboardLayout>
-            <div className="flex gap-7">
+            <div className="flex gap-7 flex-wrap md:justify-center md:mt-5">
               <Image
                 alt="GWAS"
                 src="/gwas.png"
@@ -67,7 +67,7 @@ const Home: NextPage = () => {
                   disabled:text-gray-800
                   "
                   onClick={petting}
-                  disabled={gwas?.data?.lastFeed?.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)}
+                  disabled={gwas?.data?.lastFeed?.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10) || gwas.data?.health == 100}
                   >
                     Simogatás +15
                   </button>

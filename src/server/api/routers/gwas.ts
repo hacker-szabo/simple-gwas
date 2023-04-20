@@ -5,12 +5,12 @@ import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/ap
 import { prisma } from "~/server/db";
 
 export const gwasRouter = createTRPCRouter({
-  getGwas: publicProcedure
-      .input(z.object({ userId: z.string() }))
-      .query(({ ctx, input }) => {
+  getGwas: privateProcedure
+      .query(({ ctx }) => {
+        const userId = ctx.userId
         return ctx.prisma.gwas.findFirst({
           where: {
-              userId: input.userId
+              userId: userId
           }
         });
       }),
