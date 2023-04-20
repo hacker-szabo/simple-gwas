@@ -64,12 +64,60 @@ export const gwasRouter = createTRPCRouter({
   }),
 
   createGwas: privateProcedure.mutation(async ({ ctx }) => {
-    // get useris
+    // get userid
 
     // check if he already has a gwas
 
     // if not, create a row with default values
 
     // lastPet should be less then now()-24h
+  }),
+
+  buySilver: privateProcedure.input(z.object({
+    silver: z.number().min(0)
+  })).mutation(async ({ ctx, input }) => {
+    const userId = ctx.userId
+
+    // get gwas
+    const gwas = await ctx.prisma.gwas.findFirst({
+      where: {
+        userId: userId
+      }
+    })
+
+    // check if gwas exist
+    if (!gwas) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Először csinálj GWASt!"
+      })
+    }
+
+    const silverPriceInCopper = 5000
+
+    // check if gwas has enough copper to pay for input.silver amount of silver
+    if (gwas.copper < silverPriceInCopper * input.silver) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Nincs elég pénzed!"
+      })
+    }
+    
+    // add input.silver to gwas.silver, subtract and silverPriceInCopper * input.silver from gwas.copper save it in the db
+    await prisma.gwas.update({
+      where: {
+        userId
+      },
+      data: {
+        silver: gwas.silver + input.silver,
+        copper: gwas.copper - (silverPriceInCopper * input.silver)
+      }
+    })
+
+    return {
+      silver: gwas.silver + input.silver,
+      copper: gwas.copper - (silverPriceInCopper * input.silver)
+    }
   })
+  
 });
