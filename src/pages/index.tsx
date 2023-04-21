@@ -43,6 +43,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
           <DashboardLayout>
+            {/* todo: check if he already has a gwas and show create gwas button with a username! */}
             <div className="flex gap-7 flex-wrap md:justify-center md:mt-5">
               <Image
                 alt="GWAS"

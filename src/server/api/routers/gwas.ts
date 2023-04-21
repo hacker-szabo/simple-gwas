@@ -63,14 +63,63 @@ export const gwasRouter = createTRPCRouter({
     }
   }),
 
-  createGwas: privateProcedure.mutation(async ({ ctx }) => {
+  createGwas: privateProcedure.input(z.object({
+    username: z.string().max(12).min(2)
+  })).mutation(async ({ ctx, input }) => {
     // get userid
+    const userId = ctx.userId
 
-    // check if he already has a gwas
+    // get gwas
+    const gwas = await ctx.prisma.gwas.findFirst({
+      where: {
+        userId
+      }
+    })
 
-    // if not, create a row with default values
+    // check if he already has a gwas and fail is yes
+    if (gwas) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Már van GWASod!"
+      })
+    }
 
-    // lastPet should be less then now()-24h
+    // check if input.username already exist and fail if yes
+    if (await ctx.prisma.gwas.findFirst({
+      where: {
+        username: input.username
+      }
+    }) !== null) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Már létezik GWAS ezzel a névvel!"
+      })
+    }
+
+    // create a row with default values, lastPet should be less then now()-24h
+    const newGwas = await ctx.prisma.gwas.create({
+      data: {
+        userId,
+        health: 65,
+        points: 0,
+        lastFeed: new Date(new Date().getTime() - (24 * 60 * 60 * 1000)).toISOString(),
+        silver: 0,
+        copper: 10,
+        username: input.username
+      }
+    })
+
+    // if newGwas creation failed, fail
+    if (!newGwas) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Hiba történt!"
+      })
+    }
+
+    return {
+      username: newGwas.username
+    }
   }),
 
   buySilver: privateProcedure.input(z.object({
@@ -119,5 +168,5 @@ export const gwasRouter = createTRPCRouter({
       copper: gwas.copper - (silverPriceInCopper * input.silver)
     }
   })
-  
+
 });
