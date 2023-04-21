@@ -13,7 +13,7 @@ const Navigation: FC = () => {
     const user = useUser();
 
     const gwas = api.gwas.getGwas.useQuery({
-        userId: user.user?.id || ""
+        userId: user?.user?.id || ""
     })
 
     let [navBarVisible, setNavBarVisible] = useState<Boolean>(false)
@@ -23,7 +23,6 @@ const Navigation: FC = () => {
 
     return (<>
     <div ref={animationParent}>
-        {  }
         <div className="p-4 inline-block hidden
         md:inline-block
         cursor-pointer
@@ -37,15 +36,17 @@ const Navigation: FC = () => {
         
         <div className={`blur z-10
         fixed top-0 bottom-0 left-0 right-0 opacity-50 bg-slate-300
-        ${navBarVisible?"block":"hidden"}`}
+        ${navBarVisible?"md:block":"hidden"}
+        `}
         onClick={() => setNavBarVisible(false)}>
         </div>
         <div className={`flex justify-between p-4 flex-wrap gap-7 md:gap-3 md:flex-col
         md:bg-lime-300
         md:fixed 
         md:top-0 md:bottom-0 md:z-50 md:font-semibold
-        ${navBarVisible?"md:flex":"md:hidden"}`}
-        ref={animationParent}
+        transition-all duration-500 ease-out
+        ${navBarVisible?"md:left-0":"md:left-[-60%]"}
+        `}
         >
             <div className="flex gap-7 md:gap-4
             md:flex-col
