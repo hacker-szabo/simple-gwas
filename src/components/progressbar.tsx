@@ -10,9 +10,7 @@ const ProgressBar: FC = (props) => {
             <div className="bg-yellow-600
                 rounded-md
                 h-full"
-                
                 style={{width: progress}}>
-                    {/* &nbsp; */}
             </div>
         </div>
     </>);

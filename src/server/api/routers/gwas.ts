@@ -4,15 +4,49 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 import { prisma } from "~/server/db";
 
+// lastFeed is a prisma DateTime and healthAtLastFeed is prisma Int
+const calculateCurrentHealth = (lastFeed: Date, healthAtLastFeed: number) => {
+  // get current date (YYYY-dd-mm)
+
+  const todayDate = new Date().toISOString().slice(0, 10)
+
+  // get lastFeed to ISO string (YYYY-dd-mm)
+  const lastFeedDate = lastFeed.toISOString().slice(0, 10)
+
+  // gwas loses this much health per day
+  const healthLosePerDay = 10
+
+  // calculate how many days has past since lastFeed
+
+  const daysPast = Math.floor((Date.parse(todayDate) - Date.parse(lastFeedDate)) / (1000 * 60 * 60 * 24))
+
+  // calculate health lost
+  const healthLost = daysPast * healthLosePerDay
+
+  // return new health
+  return Math.max(healthAtLastFeed - healthLost, 0)
+}
+
 export const gwasRouter = createTRPCRouter({
   getGwas: privateProcedure
-      .query(({ ctx }) => {
+      .query(async ({ ctx }) => {
         const userId = ctx.userId
-        return ctx.prisma.gwas.findFirst({
+
+        // get gwas
+        const gwas = await ctx.prisma.gwas.findFirst({
           where: {
-              userId: userId
+            userId: userId
           }
-        });
+        })
+
+        if (!gwas) {
+          return null
+        }
+
+        return {
+          ...gwas,
+          health: calculateCurrentHealth(gwas?.lastFeed, gwas?.healthAtLastFeed)
+        }
       }),
   
   pet: privateProcedure.mutation(async ({ ctx }) => {
@@ -46,20 +80,22 @@ export const gwasRouter = createTRPCRouter({
     // modositani a gwast, h tobb legyen az elete!
     // atirni a gwas datumat
 
+    const gwasHealth = calculateCurrentHealth(gwas.lastFeed, gwas.healthAtLastFeed)
+
     await prisma.gwas.update({
       where: {
         userId: userId
       },
       data: {
         lastFeed: new Date().toISOString(),
-        health: Math.min(gwas.health + 15, 100),
-        points: gwas.points + (Math.min(gwas.health + 15, 100) - gwas.health),
+        healthAtLastFeed: Math.min(gwasHealth + 15, 100),
+        points: gwas.points + (Math.min(gwasHealth + 15, 100) - gwasHealth),
       }
     })
 
     return {
       lastFeed: new Date().toISOString(),
-      health: Math.min(gwas.health + 15, 100)
+      healthAtLastFeed: Math.min(gwasHealth + 15, 100)
     }
   }),
 
@@ -67,7 +103,7 @@ export const gwasRouter = createTRPCRouter({
     username: z.string().max(12).min(2)
   })).mutation(async ({ ctx, input }) => {
     // get userid
-    const userId = ctx.userId
+    const userId: string = ctx.userId
 
     // get gwas
     const gwas = await ctx.prisma.gwas.findFirst({
@@ -100,8 +136,8 @@ export const gwasRouter = createTRPCRouter({
     const newGwas = await ctx.prisma.gwas.create({
       data: {
         userId,
-        health: 65,
         points: 0,
+        healthAtLastFeed: 65,
         lastFeed: new Date(new Date().getTime() - (24 * 60 * 60 * 1000)).toISOString(),
         silver: 0,
         copper: 10,

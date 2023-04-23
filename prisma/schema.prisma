@@ -12,7 +12,6 @@ model Gwas {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  health    Int      @default(80)
   points    Int      @default(0)
   username  String   @unique @default("unnamed")
   // alap penz
@@ -21,7 +20,8 @@ model Gwas {
   silver    Int      @default(0)
   userId    String   @unique
 
-  lastFeed DateTime @default(now())
+  lastFeed         DateTime @default(now())
+  healthAtLastFeed Int      @default(80)
 
   @@index([userId])
 }
