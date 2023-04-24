@@ -40,7 +40,11 @@ export const gwasRouter = createTRPCRouter({
         })
 
         if (!gwas) {
-          return false
+          //throw trpcerror
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Hát nincs is GWASod!"
+            })
         }
 
         return {
