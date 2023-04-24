@@ -111,7 +111,7 @@ const Navigation: FC = () => {
                         <Icon icon="ri:copper-coin-fill" />
                     </div>
                     <div className="text-sm md:text-lg">
-                        {gwas?.data?.copper} Réz
+                        {gwas?.data?.copper || 0} Réz
                     </div>
                 </Link>
                 <Link href="/points" className="flex flex-col justify-center items-center hover:text-slate-500
@@ -121,7 +121,7 @@ const Navigation: FC = () => {
                         <Icon icon="mdi:scoreboard" />
                     </div>
                     <div className="text-sm md:text-lg">
-                        {gwas?.data?.points} Pont
+                        {gwas?.data?.points || 0} Pont
                     </div>
                 </Link>
                 <Link href="/silver" className="flex flex-col justify-center items-center hover:text-slate-500
@@ -131,7 +131,7 @@ const Navigation: FC = () => {
                         <Icon icon="ph:coin-duotone" />
                     </div>
                     <div className="text-sm md:text-lg">
-                        {gwas?.data?.silver} Ezüst
+                        {gwas?.data?.silver || 0} Ezüst
                     </div>
                 </Link>
                 <Link href="/profile" className="flex flex-col justify-center items-center hover:text-slate-500

@@ -40,7 +40,7 @@ export const gwasRouter = createTRPCRouter({
         })
 
         if (!gwas) {
-          return null
+          return false
         }
 
         return {

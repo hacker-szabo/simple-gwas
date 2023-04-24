@@ -3,19 +3,27 @@ import type { FC } from "react";
 import Login from "./login";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
+import CreateGWASForm from "./createGwasForm";
+
 
 const DashboardLayout: FC = ({ children }) => {
     const user = useUser();
-
+    const gwas = api.gwas.getGwas.useQuery()
 
     return (<>
         {!user.isSignedIn && <Login/>}
         {!!user.isSignedIn && (
             <>
                 <Navigation />
-                <main className="p-4">
-                    {children}
-                </main>
+                {gwas?.data ? (<>
+                    <main className="p-4">
+                        {children}
+                    </main>
+                </>) : (<>
+                    <main className="p-4">
+                        <CreateGWASForm />
+                    </main>
+                </>) }
             </>
         )}
         </>);
