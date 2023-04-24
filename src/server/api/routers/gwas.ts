@@ -203,6 +203,36 @@ export const gwasRouter = createTRPCRouter({
       silver: gwas.silver + input.silver,
       copper: gwas.copper - (silverPriceInCopper * input.silver)
     }
+  }),
+
+  getGwases: publicProcedure.input(z.object({
+    page: z.number().min(1),
+    numberPerPage: z.number().min(10).max(250)
+  })).query(async ({ ctx, input }) => {
+    const gwases = await ctx.prisma.gwas.findMany({
+      take: input.numberPerPage,
+      skip: (input.page - 1) * input.numberPerPage,
+      select: {
+        createdAt: true,
+        id: true,
+        points: true,
+        username: true,
+        healthAtLastFeed: true,
+        lastFeed: true,
+        silver: true,
+        copper: true
+      },
+      orderBy: {
+        points: "desc"
+      }
+    })
+
+    const ret = gwases.map((gwas) => {
+      const health = calculateCurrentHealth(gwas.lastFeed, gwas.healthAtLastFeed)
+      return {...gwas, health}
+    })
+
+    return ret
   })
 
 });
