@@ -12,9 +12,7 @@ const Navigation: FC = () => {
 
     const user = useUser();
 
-    const gwas = api.gwas.getGwas.useQuery({
-        userId: user?.user?.id || ""
-    })
+    const gwas = api.gwas.getGwas.useQuery()
 
     let [navBarVisible, setNavBarVisible] = useState<Boolean>(false)
 
