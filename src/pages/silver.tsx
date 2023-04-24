@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 
   const [silverAmount, setSilverAmount] = useState<number>(0)
 
-  let maxSilverToBuy = gwas && gwas.data ? Math.floor(gwas?.data?.copper/5000) : 0
+  let maxSilverToBuy = gwas && gwas.data ? Math.floor(gwas?.data?.copper/10000) : 0
 
   const buySilver = async () => {
     const result = await buySilverMutation.mutateAsync({
@@ -73,7 +73,7 @@ const Home: NextPage = () => {
                 </div>
 
                 <div className="text-sm">
-                  Egy ezüst ára: 5000 réz
+                  Egy ezüst ára: 10000 réz
                 </div>
 
               </div>

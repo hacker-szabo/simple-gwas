@@ -81,6 +81,9 @@ export const diceRouter = createTRPCRouter({
             newCopper -= input.bid;
         }
 
+        // max copper is 10.1k
+        newCopper = Math.min(10100, newCopper)
+
         console.log([gwas.copper, newCopper]);
 
         await ctx.prisma.gwas.update({

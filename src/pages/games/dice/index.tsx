@@ -109,6 +109,12 @@ const Home: NextPage = () => {
                 <h1 className="text-3xl">Kockázós</h1>
 
                 <div className="mt-5">
+                  <b>Maximum birtokolható réz:</b>
+                  <br />
+                  10 100
+                </div>
+
+                <div className="mt-5">
                   <b>Felhasználható egyenleg</b>
                   <br />
                   {gwas?.data?.copper}
