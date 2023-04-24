@@ -1,37 +1,30 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
 
 import DashboardLayout from "~/components/dashboardLayout";
-import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
-import ProgressBar from "~/components/progressbar";
 import { useState } from "react";
 
 
 const Home: NextPage = () => {
-
-  const user = useUser();
 
   const gwas = api.gwas.getGwas.useQuery()
   
   const ctx = api.useContext()
 
   const buySilverMutation = api.gwas.buySilver.useMutation({
-    onSuccess: async () => {
+    onSuccess: () => {
       void ctx.gwas.getGwas.invalidate()
     }
   })
 
   const [silverAmount, setSilverAmount] = useState<number>(0)
 
-  let maxSilverToBuy = gwas && gwas.data ? Math.floor(gwas?.data?.copper/10000) : 0
+  const maxSilverToBuy = gwas && gwas.data ? Math.floor(gwas?.data?.copper/10000) : 0
 
-  const buySilver = async () => {
-    const result = await buySilverMutation.mutateAsync({
+  const buySilver = () => {
+    buySilverMutation.mutate({
       silver: silverAmount
     })
   }

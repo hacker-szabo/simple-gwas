@@ -1,20 +1,17 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
 
 import DashboardLayout from "~/components/dashboardLayout";
 import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import ProgressBar from "~/components/progressbar";
 import { Icon } from "@iconify/react";
 
 
 const Home: NextPage = () => {
 
-  let page = 1;
+  const page = 1;
 
   const gwases = api.gwas.getGwases.useQuery({
     page, numberPerPage: 25
@@ -35,7 +32,7 @@ const Home: NextPage = () => {
             </h2>
             <div className="flex gap-5 flex-wrap">
               {gwases?.data?.map((gwas, index) => (
-                <div className="mb-7 md:mb-0 flex flex-wrap flex-col bg-slate-200 rounded-lg p-4 hover:bg-slate-300 md:w-full">
+                <div key={index} className="mb-7 md:mb-0 flex flex-wrap flex-col bg-slate-200 rounded-lg p-4 hover:bg-slate-300 md:w-full">
                   <div className="text-lg">
                     <span>
                       #{index+1}:&nbsp;

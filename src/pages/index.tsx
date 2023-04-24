@@ -1,38 +1,29 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
 
 import DashboardLayout from "~/components/dashboardLayout";
 import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import ProgressBar from "~/components/progressbar";
 
 
 const Home: NextPage = () => {
 
-  const user = useUser();
-
-  const gwas = api.gwas.getGwas.useQuery({
-      // userId: user.user?.id
-  })
+  const gwas = api.gwas.getGwas.useQuery()
 
   const imageDimensions = 200;
 
   const ctx = api.useContext()
 
   const petMutation = api.gwas.pet.useMutation({
-    onSuccess: async () => {
+    onSuccess: () => {
       void ctx.gwas.getGwas.invalidate()
     }
   })
 
-  const petting = async () => {
-    const result = await petMutation.mutateAsync();
-
-
+  const petting = () => {
+    petMutation.mutate();
   }
 
   return (
@@ -56,7 +47,7 @@ const Home: NextPage = () => {
                   <b>{gwas?.data?.username}</b>
                 </div>
                 <div>
-                  <ProgressBar progress={gwas?.data?.health} />
+                  <ProgressBar progress={gwas?.data?.health || 0} />
                   {gwas?.data?.health}/100
                 </div>
                 <div>

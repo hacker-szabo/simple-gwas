@@ -1,21 +1,19 @@
-import { SignIn } from "@clerk/nextjs";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import { TRPCClientError } from "@trpc/client";
 
 
 const CreateGWASForm: FC = () => {
 
     const imageDimensions = 100
 
-    let [username, setUsername] = useState('')
-    let [error, setError] = useState('')
+    const [username, setUsername] = useState('')
+    const [error, setError] = useState('')
 
     const ctx = api.useContext()
 
     const createGwasMutation = api.gwas.createGwas.useMutation({
-        onSuccess: async () => {
+        onSuccess: () => {
             void ctx.gwas.getGwas.invalidate()
         },
         onError: (error) => {

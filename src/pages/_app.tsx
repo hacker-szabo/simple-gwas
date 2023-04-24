@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
-import {ClerkProvider, SignedIn, SignedOut} from "@clerk/nextjs";
+import {ClerkProvider} from "@clerk/nextjs";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {

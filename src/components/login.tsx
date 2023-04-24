@@ -1,5 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
-import { FC } from "react";
+import { type FC } from "react";
 
 
 const Login: FC = () => {

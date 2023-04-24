@@ -2,13 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
-
 import DashboardLayout from "~/components/dashboardLayout";
-import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
-import ProgressBar from "~/components/progressbar";
 import { Icon } from "@iconify/react";
 
 

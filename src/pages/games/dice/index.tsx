@@ -1,25 +1,15 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
 
 import DashboardLayout from "~/components/dashboardLayout";
-import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
-import ProgressBar from "~/components/progressbar";
-import { Icon } from "@iconify/react";
 import { useState } from "react";
 
 
 const Home: NextPage = () => {
 
-  const user = useUser();
-
-  const gwas = api.gwas.getGwas.useQuery({
-      userId: user.user?.id
-  });
+  const gwas = api.gwas.getGwas.useQuery();
 
   const ctx = api.useContext()
 
@@ -29,8 +19,8 @@ const Home: NextPage = () => {
     }
   });
 
-  const askForCopper = async () => {
-    const c = await askForCopperMutate.mutate()
+  const askForCopper = () => {
+    askForCopperMutate.mutate()
   }
 
   const askForMore = (<>
@@ -57,22 +47,25 @@ const Home: NextPage = () => {
     },
   })
 
-  const bidHandler = async () => {
-    const result = await bidCopperMutate.mutateAsync({
+  const bidHandler = () => {
+    void bidCopperMutate.mutateAsync({
       bid: +bid
+    }).then((result) => {
+      setLastThrowOne(result?.diceOne)
+      setLastThrowTwo(result?.diceTwo)
+      setLastBid(result?.bid)
+      setLastIsWon(result?.isWon)
+    }).catch((error) => {
+      // todo
+      console.log(error);
     })
-
-    setLastThrowOne(result?.diceOne || 0);
-    setLastThrowTwo(result?.diceTwo || 0);
-    setLastBid(result?.bid || 0)
-    setLastIsWon(result?.isWon || false)
     
   }
 
   const gamblingForm = (<>
     <div className="mt-5">
       <label htmlFor="bid-input" className="text-sm">Tét:</label> <br />
-      <input id="bid-input" type="number" value={bid} onChange={(e) => setBid(e.target.value)}
+      <input id="bid-input" type="number" value={bid} onChange={(e) => setBid(parseInt(e.target.value))}
         className="border border-black p-3 rounded w-full"
         min="1"
         max={gwas?.data?.copper || 0}

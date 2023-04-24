@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { type FC } from "react";
 import { api } from "~/utils/api";
 
 import Marquee from "react-fast-marquee";

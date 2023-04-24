@@ -1,36 +1,29 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import {SignedOut, SignIn, SignInButton, SignOutButton, useUser} from "@clerk/nextjs";
 
 import DashboardLayout from "~/components/dashboardLayout";
-import Image from "next/image";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
-import ProgressBar from "~/components/progressbar";
 import { useState } from "react";
 
 
 const Home: NextPage = () => {
 
-  const user = useUser();
-
   const latestNews = api.news.news.useQuery()
 
-  let [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const ctx = api.useContext()
 
   const newMessageMutation = api.news.newMessage.useMutation({
-    onSuccess:async () => {
+    onSuccess: () => {
       void ctx.news.news.invalidate()
       void ctx.gwas.getGwas.invalidate()
     }
   })
 
-  const newMessage = async () => {
-    const result = await newMessageMutation.mutateAsync({
+  const newMessage = () => {
+    newMessageMutation.mutate({
       message: message
     })
 
@@ -46,7 +39,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
           <DashboardLayout>
-            {/* todo: uj hir feladasa */}
             <div className="flex flex-wrap gap-5">
               <div>
                 <h2 className="text-3xl mb-4">

@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import {SignOutButton, useUser} from "@clerk/nextjs";
+import React, { type FC, useState } from 'react';
+import {SignOutButton} from "@clerk/nextjs";
 import NewsFeed from "~/components/NewsFeed";
 import Link from "next/link";
 
@@ -9,12 +9,9 @@ import { api } from '~/utils/api';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const Navigation: FC = () => {
-
-    const user = useUser();
-
     const gwas = api.gwas.getGwas.useQuery()
 
-    let [navBarVisible, setNavBarVisible] = useState<Boolean>(false)
+    const [navBarVisible, setNavBarVisible] = useState<boolean>(false)
 
     // talan az a baj, hogy nem a parentre teszem ra, de hat nincs ennek nagyobb parent.....
     const [animationParent] = useAutoAnimate()

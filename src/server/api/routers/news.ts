@@ -56,6 +56,14 @@ export const newsRouter = createTRPCRouter({
             }
         })
 
+        // if newmessage failed, fail
+        if (!newMessage) {
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Hiba történt!'
+            })
+        }
+
         // subtract 5 silver from the gwas
         await ctx.prisma.gwas.update({
             where: {

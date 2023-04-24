@@ -1,7 +1,10 @@
-import { FC } from "react";
+import { type FC } from "react";
 
+type Props = {
+    progress: number
+}
 
-const ProgressBar: FC = (props) => {
+const ProgressBar: FC<Props> = (props) => {
 
     const progress = `${props.progress}%`
 
