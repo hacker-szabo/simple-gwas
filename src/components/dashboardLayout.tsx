@@ -5,8 +5,11 @@ import { useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 import CreateGWASForm from "./createGwasForm";
 
+type Props = {
+    children: React.ReactNode
+}
 
-const DashboardLayout: FC = ({ children }) => {
+const DashboardLayout: FC<Props> = ({ children }) => {
     const user = useUser();
     const gwas = api.gwas.getGwas.useQuery()
 
