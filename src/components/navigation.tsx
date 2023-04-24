@@ -104,7 +104,7 @@ const Navigation: FC = () => {
                 </Link>
             </div>
             <div className="flex gap-7 md:gap-4 md:flex-col">
-                <Link href="/copper" className="flex flex-col justify-center items-center hover:text-slate-500
+                <Link href="/#" className="flex flex-col justify-center items-center hover:text-slate-500
                 md:flex-row md:gap-5 md:justify-start
                 ">
                     <div className="text-4xl">
@@ -114,7 +114,7 @@ const Navigation: FC = () => {
                         {gwas?.data?.copper || 0} Réz
                     </div>
                 </Link>
-                <Link href="/points" className="flex flex-col justify-center items-center hover:text-slate-500
+                <Link href="/#" className="flex flex-col justify-center items-center hover:text-slate-500
                 md:flex-row md:gap-5 md:justify-start
                 ">
                     <div className="text-4xl">
@@ -134,7 +134,7 @@ const Navigation: FC = () => {
                         {gwas?.data?.silver || 0} Ezüst
                     </div>
                 </Link>
-                <Link href="/profile" className="flex flex-col justify-center items-center hover:text-slate-500
+                {/* <Link href="/profile" className="flex flex-col justify-center items-center hover:text-slate-500
                 md:flex-row md:gap-5 md:justify-start
                 ">
                     <div className="text-4xl">
@@ -143,8 +143,8 @@ const Navigation: FC = () => {
                     <div className="text-sm md:text-lg">
                         Profil
                     </div>
-                </Link>
-                <Link href="#" className="flex flex-col justify-center items-center hover:text-slate-500
+                </Link> */}
+                <div className="flex flex-col justify-center items-center hover:text-slate-500
                 md:flex-row md:gap-5 md:justify-start
                 ">
                     <div className="text-4xl">
@@ -153,7 +153,7 @@ const Navigation: FC = () => {
                     <div className="text-sm md:text-lg">
                         <SignOutButton>Kijelentkezés</SignOutButton>
                     </div>
-                </Link>
+                </div>
             </div>
         </div>
         <NewsFeed />
