@@ -42,7 +42,7 @@ export const diceRouter = createTRPCRouter({
     }),
 
     throwTheDice: privateProcedure.input(z.object({
-        bid: z.number().positive().finite().safe()
+        bid: z.number().positive().finite().safe().max(150)
     })).mutation(async ({ ctx, input }) => {
         const userId = ctx.userId;
 
@@ -80,9 +80,6 @@ export const diceRouter = createTRPCRouter({
             console.log('vesztett');
             newCopper -= input.bid;
         }
-
-        // max copper is 10.1k
-        newCopper = Math.min(10100, newCopper)
 
         console.log([gwas.copper, newCopper]);
 

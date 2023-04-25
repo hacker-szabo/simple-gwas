@@ -68,7 +68,7 @@ const Home: NextPage = () => {
       <input id="bid-input" type="number" value={bid} onChange={(e) => setBid(parseInt(e.target.value))}
         className="border border-black p-3 rounded w-full"
         min="1"
-        max={gwas?.data?.copper || 0}
+        max={Math.min(gwas?.data?.copper || 0, 150)}
       />
       <div>
         <button
@@ -102,9 +102,9 @@ const Home: NextPage = () => {
                 <h1 className="text-3xl">Kockázós</h1>
 
                 <div className="mt-5">
-                  <b>Maximum birtokolható réz:</b>
+                  <b>Maximum Tét:</b>
                   <br />
-                  10 100
+                  150
                 </div>
 
                 <div className="mt-5">
