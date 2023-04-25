@@ -182,7 +182,7 @@ export const gwasRouter = createTRPCRouter({
       })
     }
 
-    const silverPriceInCopper = 5000
+    const silverPriceInCopper = 10000
 
     // check if gwas has enough copper to pay for input.silver amount of silver
     if (gwas.copper < silverPriceInCopper * input.silver) {
