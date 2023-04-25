@@ -22,11 +22,11 @@ const DashboardLayout: FC<Props> = ({ children }) => {
                     <main className="p-4">
                         {children}
                     </main>
-                </>) : (<>
+                </>) : (gwas.isFetched ? (<>
                     <main className="p-4">
                         <CreateGWASForm />
                     </main>
-                </>) }
+                </>) : (<>Betöltés....</>)) }
             </>
         )}
         </>);
